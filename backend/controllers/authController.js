@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 dotenv.config();
 
 exports.register = async (req, res) => {
@@ -10,11 +10,15 @@ exports.register = async (req, res) => {
 
   try {
     let user = await User.findOne({ email });
-
+    // Check if user exists
     if (user) {
       return res.status(400).json({ msg: 'User already exists' });
     }
 
+    // Validate email
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ msg: 'Invalid Email' });
+    }
     user = new User({
       name,
       email,
