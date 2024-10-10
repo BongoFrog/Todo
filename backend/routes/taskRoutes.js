@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const Task = require('../models/Task');
-// @route    GET api/protected-route
-// @desc     Get protected data
-// @access   Private
+
 //GET
 router.get('/', authMiddleware, async(req, res) => {
   try {
